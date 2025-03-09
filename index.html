@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Stack App</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        input, button { margin: 5px; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Full Stack Auth App</h2>
+
+    <div>
+        <h3>Register</h3>
+        <input type="text" id="regUser" placeholder="Username">
+        <input type="password" id="regPass" placeholder="Password">
+        <button onclick="register()">Register</button>
+    </div>
+
+    <div>
+        <h3>Login</h3>
+        <input type="text" id="loginUser" placeholder="Username">
+        <input type="password" id="loginPass" placeholder="Password">
+        <button onclick="login()">Login</button>
+    </div>
+
+    <div>
+        <button onclick="getDashboard()">View Dashboard</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <p id="message"></p>
+
+    <script>
+        async function register() {
+            const username = document.getElementById("regUser").value;
+            const password = document.getElementById("regPass").value;
+
+            const res = await fetch("/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password }),
+            });
+            document.getElementById("message").innerText = (await res.json()).message;
+        }
+
+        async function login() {
+            const username = document.getElementById("loginUser").value;
+            const password = document.getElementById("loginPass").value;
+
+            const res = await fetch("/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password }),
+            });
+            document.getElementById("message").innerText = (await res.json()).message;
+        }
+
+        async function getDashboard() {
+            const res = await fetch("/dashboard");
+            document.getElementById("message").innerText = (await res.json()).message;
+        }
+
+        async function logout() {
+            const res = await fetch("/logout");
+            document.getElementById("message").innerText = (await res.json()).message;
+        }
+    </script>
+</body>
+</html>
